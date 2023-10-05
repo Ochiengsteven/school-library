@@ -83,9 +83,9 @@ Twitter: @ochiengotieno63<br>
 <details>
 <summary>In near future I am planning to implement parent portal</summary>
   <ul>
-    <li>Mobile app for parents to access real-time information about their child's performance, attendance, and school activities.</li>
-    <li>Allow parents to communicate with teachers and administrators, schedule parent-teacher conferences, and receive notifications about important events or announcements.</li>
-    <li>Provide a secure and convenient way for parents to stay actively involved in their child's education.</li>
+    <li>decorate a class by Implement composition.</li>
+    <li>set up associations between classes and objects.</li>
+    <li>add basic UI.</li>
   </ul>
 </details>
 
