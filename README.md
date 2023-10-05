@@ -83,7 +83,6 @@ Twitter: @ochiengotieno63<br>
 <details>
 <summary>In near future I am planning to implement parent portal</summary>
   <ul>
-    <li>decorate a class by Implement composition.</li>
     <li>set up associations between classes and objects.</li>
     <li>add basic UI.</li>
   </ul>
