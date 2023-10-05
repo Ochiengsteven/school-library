@@ -65,11 +65,10 @@ Before running this project, make sure you have the following prerequisites inst
 2. Navigate to the project directory:
 
     ```sh
-    cd school_library
+    cd school-library
 3. Run the program:
     ```sh
-    ruby school_library.rb
-
+    ruby test.rb
 <!-- AUTHORS -->
 
 ## 👥 Authors <a name="authors"></a>
@@ -83,7 +82,6 @@ Twitter: @ochiengotieno63<br>
 <details>
 <summary>In near future I am planning to implement parent portal</summary>
   <ul>
-    <li>decorate a class by Implement composition.</li>
     <li>set up associations between classes and objects.</li>
     <li>add basic UI.</li>
   </ul>
