@@ -1,14 +1,15 @@
-# student.rb
-
 require_relative 'person'
 
 class Student < Person
-  def initialize(age, classroom, name = 'Unknown', parent_permission: true)
-    super(age, name, parent_permission)
+  attr_reader :classroom
+
+  def initialize(id, classroom, age = 0, name = 'Unknown', parent_permission: true)
+    super(id, name, age, parent_permission)
     @classroom = classroom
+    classroom.add_student(self)
   end
 
   def play_hooky
-    '¯\\(ツ)/¯'
+    '¯\(ツ)/¯'
   end
 end
