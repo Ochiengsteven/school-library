@@ -1,162 +1,120 @@
-# app.rb
-
 require_relative 'book'
 require_relative 'person'
 require_relative 'rental'
 
-# Empty arrays to store books, people, and rentals.
-books = []
-people = []
-rentals = []
-
-# Method to list all books.
-def list_books(books)
-  puts "\nList of Books:"
-  books.each_with_index do |book, index|
-    puts "#{index + 1}. Title: #{book.title}, Author: #{book.author}"
+class Student < Person
+  def initialize(id, name, age, parent_permission)
+    super(id, name, age)
+    @parent_permission = parent_permission
   end
 end
 
-# Method to list all people.
-def list_people(people)
-  puts "\nList of People:"
-  people.each_with_index do |person, index|
-    puts "#{index + 1}. Name: #{person.name}, Type: #{person.class}"
+class App
+  def initialize
+    @books = []
+    @people = []
+    @rentals = []
+  end
+
+  def list_books
+    puts "\nBooks:"
+    @books.each do |book|
+      puts "Title: #{book.title}, Author: #{book.author}"
+    end
+  end
+
+  def list_people
+    puts "\nPeople:"
+    @people.each do |person|
+      puts "ID: #{person.id}, Name: #{person.name}, Age: #{person.age}"
+    end
+  end
+
+  def create_person
+    print 'Enter the name of the person: '
+    name = gets.chomp
+
+    print 'Enter the age of the person: '
+    age = gets.chomp.to_i
+
+    print 'Does the person have parent permission? (y/n): '
+    parent_permission = gets.chomp.downcase == 'y'
+
+    print 'Is the person a student or a teacher? (student/teacher): '
+    type = gets.chomp.downcase
+
+    if type == 'student'
+      create_student(name, age, parent_permission)
+    elsif type == 'teacher'
+      create_teacher(name, age, parent_permission)
+    else
+      puts 'Invalid person type. Person not created.'
+    end
+  end
+
+  def create_student(name, age, parent_permission)
+    student = Student.new(@people.length + 1, name, age, parent_permission)
+    @people.push(student)
+    puts 'Student created successfully.'
+  end
+
+  def create_teacher(name, age, parent_permission)
+    teacher = Teacher.new(@people.length + 1, name, age, parent_permission)
+    @people.push(teacher)
+    puts 'Teacher created successfully.'
+  end
+
+  def create_book
+    print 'Enter the title of the book: '
+    title = gets.chomp
+
+    print 'Enter the author of the book: '
+    author = gets.chomp
+
+    book = Book.new(@books.length + 1, title, author)
+    @books.push(book)
+    puts 'Book created successfully.'
+  end
+
+  def create_rental
+    puts 'Available books:'
+    list_books
+
+    print 'Enter the index of the book you want to rent: '
+    book_index = gets.chomp.to_i - 1
+
+    print 'Enter the index of the person who will rent the book: '
+    person_index = gets.chomp.to_i - 1
+
+    if valid_book_index?(book_index) && valid_person_index?(person_index)
+      rental = Rental.new(Date.today, @books[book_index], @people[person_index])
+      @rentals.push(rental)
+      puts 'Rental created successfully.'
+    else
+      puts 'Invalid book or person index. Rental not created.'
+    end
+  end
+
+  def list_rentals_for_person(person_id)
+    person = @people.find { |p| p.id == person_id }
+    if person
+      puts "\nRentals for #{person.name}:"
+      rentals = @rentals.select { |rental| rental.person == person }
+      rentals.each do |rental|
+        puts "Book: #{rental.book.title}, Date: #{rental.date}"
+      end
+    else
+      puts "Person with ID #{person_id} not found."
+    end
+  end
+
+  private
+
+  def valid_book_index?(index)
+    index >= 0 && index < @books.length
+  end
+
+  def valid_person_index?(index)
+    index >= 0 && index < @people.length
   end
 end
-
-# Method to create a student.
-def create_student(people, name)
-  age = ask_for_age
-  parent_permission = ask_for_parent_permission
-
-  student = Student.new(people.length + 1, name, age, parent_permission)
-  people.push(student)
-  puts 'Student created successfully.'
-end
-
-# Method to create a teacher.
-def create_teacher(people, name)
-  specialty = ask_for_specialty
-
-  teacher = Teacher.new(people.length + 1, name, specialty)
-  people.push(teacher)
-  puts 'Teacher created successfully.'
-end
-
-# Method to ask for age.
-def ask_for_age
-  print 'Enter the age: '
-  gets.chomp.to_i
-end
-
-# Method to ask for parent permission.
-def ask_for_parent_permission
-  print 'Does the student have parent permission? (yes/no): '
-  permission = gets.chomp.downcase
-  %w[yes y].include?(permission)
-end
-
-# Method to ask for specialty (for teachers).
-def ask_for_specialty
-  print 'Enter the specialty: '
-  gets.chomp
-end
-
-# Method to create a person (teacher or student).
-def create_person(people)
-  print 'Enter the name of the person: '
-  name = gets.chomp
-
-  puts 'Choose the type of person:'
-  puts '1. Student'
-  puts '2. Teacher'
-  print 'Enter the type (1/2): '
-  type = gets.chomp.to_i
-
-  if type == 1
-    create_student(people, name)
-  elsif type == 2
-    create_teacher(people, name)
-  else
-    puts 'Invalid choice. Person not created.'
-  end
-end
-
-# Method to create a rental.
-def create_rental(books, people, rentals)
-  puts 'Available books:'
-  list_books(books)
-
-  print 'Enter the index of the book you want to rent: '
-  book_index = gets.chomp.to_i - 1
-
-  print 'Enter the index of the person who will rent the book: '
-  person_index = gets.chomp.to_i - 1
-
-  if book_index >= 0 && book_index < books.length && person_index >= 0 && person_index < people.length
-    rental = Rental.new(Date.today, books[book_index], people[person_index])
-    rentals.push(rental)
-    puts 'Rental created successfully.'
-  else
-    puts 'Invalid book or person index. Rental not created.'
-  end
-end
-
-# Method to display the main menu and handle user input.
-def display_main_menu
-  puts "\nOptions:"
-  puts '1. List all books'
-  puts '2. List all people'
-  puts '3. Create a person'
-  puts '4. Create a book'
-  puts '5. Create a rental'
-  puts '6. List all rentals for a person'
-  puts '7. Quit'
-end
-
-# Method to handle user choice and execute corresponding actions.
-def handle_user_choice(choice, books, people, rentals)
-  case choice
-  when 1
-    list_books(books)
-  when 2
-    list_people(people)
-  when 3
-    create_person(people)
-  when 4
-    create_book(books)
-  when 5
-    create_rental(books, people, rentals)
-  when 6
-    list_rentals_for_person(rentals, people)
-  when 7
-    quit_app
-  else
-    invalid_choice
-  end
-end
-
-# Method to handle invalid choice.
-def invalid_choice
-  puts 'Invalid choice. Please choose a valid option.'
-end
-
-# Method to quit the app.
-def quit_app
-  puts 'Goodbye!'
-  exit(0)
-end
-
-# Main application loop.
-def main(books, people, rentals)
-  loop do
-    display_main_menu
-    print 'Enter your choice (1-7): '
-    choice = gets.chomp.to_i
-    handle_user_choice(choice, books, people, rentals)
-  end
-end
-
-# Call the main method to start the app.
-main(books, people, rentals)
