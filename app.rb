@@ -54,7 +54,7 @@ end
 def ask_for_parent_permission
   print 'Does the student have parent permission? (yes/no): '
   permission = gets.chomp.downcase
-  permission == 'yes' || permission == 'y'
+  %w[yes y].include?(permission)
 end
 
 # Method to ask for specialty (for teachers).
