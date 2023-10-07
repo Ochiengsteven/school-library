@@ -4,7 +4,7 @@ require_relative 'book'
 require_relative 'person'
 require_relative 'rental'
 
-# Initialize empty arrays to store books, people, and rentals.
+# Empty arrays to store books, people, and rentals.
 books = []
 people = []
 rentals = []
